@@ -1,0 +1,14 @@
+{% extends "bbase.html" %}
+{% load filename %}
+
+{% block title %} 服务器错误 {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>很抱歉，服务器内部发生错误！</h1>
+		<span>温馨提示：</span><br>
+		<span>请检查您访问的网址是否正确</span><br>
+		<span>如果您不能确认访问的网址，请<a href="/index/">返回首页<a></span>
+    </div>
+
+{% endblock %}

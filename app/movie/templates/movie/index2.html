@@ -1,0 +1,21 @@
+{% if user %}
+    {% load humanize %}
+    {% if user.realrate_set.all.count < 1 %}
+        <p>You have not rated any movies yet</p>
+    {% else %}
+        <p>So far you have rated {{ user.watched_movies|intcomma }} movies.
+            But your favored movies are (top 10) :</p>
+        <ul>
+        {% for real_rate in user.realrate_set.top_10 %}
+            <li><a href="{% url 'detail' real_rate.movie.id %}">{{ real_rate.movie.name }} is rated as {{ real_rate.rate }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p>In any case, we bring those movies to you based on your recent activities. </p>
+        <ul>
+        {% for suggest_rate in user.top_suggest %}
+            <li><a href="{% url 'detail' suggest_rate.movie.id %}">{{ suggest_rate.movie.name }} is rated as {{ suggest_rate.rate }}</a></li>
+        {% endfor %}
+        </ul>
+{% endif %}

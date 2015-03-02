@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head> 
+    <title>{% block title %}{% endblock %}-Owl</title>
+    <link rel="stylesheet" type="text/css" href="/static/metro/css/metro-bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/metro/css/metro-bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="/static/metro/css/iconFont.css" />
+    <link rel="stylesheet" type="text/css" href="/static/metro/css/docs.css" />
+    <link rel="stylesheet" type="text/css" href="/static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="/static/d3/css/coltree.css" />
+    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery/jquery.widget.min.js"></script>
+    <script type="text/javascript" src="/static/metro/min/metro.min.js"></script>
+    <script type="text/javascript" src="/static/custom.js"></script>
+    <script type="text/javascript" src="/static/d3/js/d3.v3.min.js"></script>
+	{% block exjs %} {% endblock %}
+</head>
+
+<body class="metro">
+    <header class="bg-dark">
+    <div class="navigation-bar dark fixed-top shadow">
+        <div class="navigation-bar-content container" >
+            <a class="element" href="/">Owl<sup>1.0</sup></a>
+            <span class="element-divider"></span>
+            <ul class="element-menu">
+                <li><a href="{% url 'app.movie.views.index' %}">Movie</a></li>
+            </ul>
+			<div class="no-tablet-portrait no-phone">
+			<div class="element-menu place-right">
+			{% if username %}
+				<div class="element" title="{{email}}">
+					<span class="icon-user"></span>
+					<span>{{username}}</span>
+				</div>
+				<span class="element-divider"></span>
+				<a href={% url 'app.account.views.change_pwd' %} class="element" title="Change Pwd">
+					<span>Change Pwd</span>
+				</a>
+				<span class="element-divider"></span>
+				<a href={% url 'app.account.views.logout' %} class="element" title="Sign Out">
+					<span>Sign Out</span>
+				</a>
+			{% else %}
+				<a title="Sign up" href={% url 'app.account.views.tosignup' %} class="element">
+					<span>Sign Up</span>
+				</a>
+				<a title="Sign In" href={% url 'app.account.views.tologin' %} class="element">
+					<span>Sign In</span>
+				</a>
+			{% endif %}
+			</div>
+			</div>
+        </div>
+    </div>
+    </header>
+    {% block content %} {% endblock %}
+</div>
+</body>
+</html>
