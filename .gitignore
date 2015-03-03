@@ -4,3 +4,5 @@ nohup.out
 .idea/
 */*/__pycache__/
 */__pycache__/
+startup.sh
+migrations

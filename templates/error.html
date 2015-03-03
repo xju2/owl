@@ -1,5 +1,4 @@
 {% extends "bbase.html" %}
-{% load filename %}
 
 {% block title %} 操作失败 {% endblock %}
 
@@ -11,7 +10,7 @@
 		<br>
 		<ul>
 			<li><a href="{{retry_url}}">重试</a></li>
-			<li><a href="/index/">返回首页<a></span></li>
+			<li><span><a href={% url 'app.account.views.index' %}>返回首页</a></span></li>
 		</ul>
     </div>
 

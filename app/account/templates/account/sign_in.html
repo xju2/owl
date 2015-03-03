@@ -5,16 +5,10 @@
 {% block exjs %}
 <script>
 	function validate() {
-		var email = $("#email").val();
-		if (email == null || email == '') {
-			alert("电子邮件不能为空!");
-			$('#email').focus();
-			return false;
-		}
-		var re = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-		if (!re.test(email)) {
-			alert("请正确填写电子邮件!");
-			$('#email').focus();
+		var username = $("#username").val();
+		if (username == null || username == '') {
+			alert("Input user name!");
+			$('#username').focus();
 			return false;
 		}
 	}
@@ -27,28 +21,28 @@
             <a href="/">
                 <i class="icon-arrow-left-3 fg-darker smaller"></i>
             </a>
-            返回</h1>
+            Home</h1>
         <div class="grid no-margin">
 			<div class="row">
 			<div class="span6">
 				<div class="panel">
 					<div class="panel-header bg-lightBlue fg-white">
-						使用电子邮件登录
+						Sign In
 					</div>
 					<div class="panel-content">
-						<form action="{% url 'login' %}" method="POST" onsubmit="return validate();">
+						<form action="{% url 'do_sign_in' %}" method="POST" onsubmit="return validate();">
 							{% csrf_token %}
 							<fieldset>
-							<label>电子邮件</label>
+							<label>Username</label>
 							<div class="input-control text" data-role="input-control">
-							<input type="text" id="email" name="email" placeholder="请输入电子邮件">
+							<input type="text" id="username" name="username" placeholder="Type username">
 							</div>
-							<label>密码</label>
+							<label>Password</label>
 							<div class="input-control password" data-role="input-control">
-							<input type="password" name="passwd" placeholder="请输入密码">
+							<input type="password" name="password" placeholder="Type password">
 							<button class="btn-reveal" tabindex="-1"></button>
 							</div>
-							<input type="submit" value="登录">
+							<input type="submit" value="Sign In">
 							</fieldset>
 						</form>
 					</div>
@@ -57,5 +51,4 @@
 			</div>
         </div>
     </div>
-
 {% endblock %}

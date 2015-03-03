@@ -1,8 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
-from app.movie.models import User
-
 # -*- coding: utf_8 -*-
-from itertools import islice
+from django.core.management.base import BaseCommand, CommandError
+from sqlalchemy import create_engine
+from django.conf import settings
+import pandas as pd
+import numpy as np
 
 
 class Command(BaseCommand):
@@ -12,22 +13,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if len(args) == 0:
             raise CommandError('No input file given')
-        user_list = args[0]
-        n = 10000
-        counter = 0
-        with open(user_list) as f:
-            while True:
-                next_n_lines = list(islice(f,n))
-                if not next_n_lines:
-                    break
-                for line in next_n_lines:
-                    all_iterms = line.split()
-                    index = all_iterms[0]
-                    if len(all_iterms) > 1:
-                        name = all_iterms[1]
-                    else:
-                        name = "user"+str(counter)
-                    q = User.objects.create_user(index, name)
-                    q.save()
-                    counter += 1
-        self.stdout.write('Successfully added %d Users' % counter)
+        if len(args) == 0:
+            raise CommandError('No input file given')
+        db_name = settings.DATABASES['default']['NAME']
+        engine = create_engine('mysql+mysqldb://xju:1234@localhost/'+db_name+'?charset=utf8')
+        input_name = args[0]
+        df = pd.read_table(input_name, names=['inner_id', 'name'],
+                           dtype={'inner_id': np.str, 'name': np.str})
+        df['watched_movies'] = 0
+        df.drop('name', axis=1).to_sql("movie_phantomuser", engine, flavor='mysql', if_exists='append',
+                                       index=False, chunksize=1000)
+        self.stdout.write('Successfully added %d users' % (df.shape[0]))

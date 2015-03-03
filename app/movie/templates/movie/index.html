@@ -15,7 +15,7 @@
     	{% if user.realrate_set.all.count < 1 %}
         <p>You have not rated any movies yet</p>
     	{% else %}
-        <p>You are: {{ user.first_name }}So far you have rated {{ user.watched_movies|intcomma }} movies.
+        <p>You are: {{ user }}. So far you have rated {{ user.watched_movies|intcomma }} movies.
             But your favored movies are (top 10) :</p>
         <ul>
         {% for real_rate in user.realrate_set.top_10 %}

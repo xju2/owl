@@ -1,5 +1,4 @@
 {% extends "bbase.html" %}
-{% load filename %}
 
 {% block title %} 操作成功 {% endblock %}
 
@@ -8,7 +7,7 @@
         <h1>恭喜，操作成功！</h1>
 		<span>温馨提示：</span><br>
 		<span>{{message}}</span><br><br>
-		<span><a href={% url 'app.account.views.index' %}>请返回首页</a> </span>
+		<span><a href="{% url 'app.account.views.index' %}">请返回首页</a> </span>
     </div>
 
 {% endblock %}

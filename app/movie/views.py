@@ -1,13 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from app.movie.models import Movie
-from app.movie.models import OwlUser
-
+from app.movie.models import Movie, OwlUser
 import random
-
 random.seed = 20
 
 
 def index(request):
+    print(request)
+    print(request.session)
     ctx = dict(username=request.session.get('username'))
     return render(request, 'movie/index.html', ctx)
 
@@ -26,7 +25,6 @@ def new_user(request):
     user.save()
     context = {'user': user}
     return render(request, 'movie/index.html', context)
-
 
 def detail(request, movie_id):
     ctx = dict(username=request.session.get('username'))

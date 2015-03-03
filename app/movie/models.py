@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -14,7 +13,6 @@ class Movie(models.Model):
     inner_id = models.PositiveIntegerField()
     name = models.CharField(max_length=25)
     avg_rate_site = models.SmallIntegerField(null=True)  # convert decimal value to integer
-    #publish_date = models.DateTimeField('date released', default=timezone.now(), null=True)
     publish_date = models.CharField('date released', max_length=11, default="NLL", null=True)
     types = models.CharField(max_length=40, null=True)
     rated_users = models.PositiveIntegerField(default=0, blank=True, null=True)
@@ -58,6 +56,7 @@ class OwlUser(User):
 
 
 class RateBaseManager(models.Manager):
+
     def order_by_rate(self):
         return self.order_by('rate').reverse()
 
@@ -89,3 +88,16 @@ class RealRate(RateBase):
 class SuggestRate(RateBase):
     pass
 
+
+class PhantomUser(models.Model):
+    inner_id = models.CharField(max_length=20)
+    watched_movies = models.PositiveSmallIntegerField(default=0)
+
+
+class PhantomRate(models.Model):
+    user = models.ForeignKey(PhantomUser)
+    movie = models.ForeignKey(Movie)
+    rate = models.SmallIntegerField()
+
+    def __str__(self):
+        return self.user.inner_id, " rated ", self.movie.name, " as ", self.rate
