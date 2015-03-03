@@ -9,7 +9,6 @@ from app.movie.models import Movie
 from app.movie.models import RealRate
 from app.movie.models import SuggestRate
 
-
 class ActiveUserListFilter(admin.SimpleListFilter):
     title = _('active users')
     parameter_name = 'user'
@@ -28,15 +27,12 @@ class ActiveUserListFilter(admin.SimpleListFilter):
         except TypeError:
             return None
 
-
 class RealRateAdmin(admin.ModelAdmin):
     list_display = ['user', 'movie', 'rate']
     ordering = ['user']
 
-
 class UserAdmin(admin.ModelAdmin):
     list_filter = (ActiveUserListFilter,)
-
 
 admin.site.register(Movie)
 admin.site.register(SuggestRate)

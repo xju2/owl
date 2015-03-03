@@ -1,23 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from app.movie.models import Movie
-from app.movie.models import User
-#from django.contrib.auth import authenticate, login
-#from django.http import Http404
-#from django.contrib.auth.models import User
-#from django.shortcuts import redirect
+from app.movie.models import Movie, User
 import random
-
 random.seed = 20
-
 
 def login(request):
     return render(request, 'movie/login.html')
 
-
 def index(request):
     ctx = dict(username=request.session.get('username'))
     return render(request, 'movie/index.html', ctx)
-
 
 def new_user(request):
     first_name = request.POST['first_name']
@@ -33,7 +24,6 @@ def new_user(request):
     user.save()
     context = {'user': user}
     return render(request, 'movie/index.html', context)
-
 
 def detail(request, movie_id):
     ctx = dict(username=request.session.get('username'))

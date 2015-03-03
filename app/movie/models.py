@@ -1,14 +1,11 @@
 from django.db import models
 from django.utils import timezone
-#from jsonfield import JSONField
-
 
 # Create your models here.
 class MovieManager(models.Manager):
     def create_movie(self, index, name):
         movie = self.create(index=index, name=name, date=timezone.now())
         return movie
-
 
 class Movie(models.Model):
     index = models.CharField(max_length=200, unique=True)
@@ -28,12 +25,10 @@ class Movie(models.Model):
             n_rate += 1
         return total_rate * 1.0 / n_rate
 
-
 class UserManager(models.Manager):
     def create_user(self, index, name):
         user = self.create(index=index, name=name)
         return user
-
 
 class User(models.Model):
     index = models.CharField(max_length=200, unique=True)
@@ -43,7 +38,6 @@ class User(models.Model):
     email = models.EmailField(blank=True)
     last_name = models.CharField(max_length=200, blank=True)
     first_name = models.CharField(max_length=200, blank=True)
-    #rated = JSONField("rated movies", blank=True, default={});
     objects = UserManager()
 
     def top_suggest(self):
@@ -51,7 +45,6 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class RealRateManager(models.Manager):
     def order_by_rate(self):
@@ -63,7 +56,6 @@ class RealRateManager(models.Manager):
     def top_10(self):
         return self.order_by('rate').reverse()[:10]
 
-
 class RealRate(models.Model):
     user = models.ForeignKey(User)
     movie = models.ForeignKey(Movie)
@@ -72,7 +64,6 @@ class RealRate(models.Model):
 
     def __str__(self):
         return self.user.name, " rated ", self.movie.name, " as ", self.rate
-
 
 class SuggestRate(models.Model):
     user = models.ForeignKey(User)

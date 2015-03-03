@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'owl.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'movies',
+        'NAME': 'owl',
         'USER': 'xju',
         'PASSWORD': '1234',
         'HOST': 'localhost',
@@ -96,3 +96,11 @@ STATICFILES_DIRS = (
     MEDIA_ROOT,
 
 )
+
+LOGIN_URL = '/account/sign_in/'
+
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = 'oppps@163.com'
+EMAIL_HOST_PASSWORD = 'dugu9jian'
+EMAIL_USE_TLS = True

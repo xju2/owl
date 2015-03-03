@@ -1,7 +1,6 @@
 {% extends "bbase.html" %}
-{% load filename %}
 
-{% block title %} 修改密码 {% endblock %}
+{% block title %}Change password{% endblock %}
 
 {% block exjs %}
 <script>
@@ -9,7 +8,7 @@
 		var newpasswd = $("#newpasswd").val();
 		var newpasswd1 = $("#newpasswd1").val();
 		if (newpasswd != newpasswd1) {
-			alert("两次新密码输入不一致，请重新输入!");
+			alert("Retype password!");
 			$('#newpasswd').focus();
 			return false;
 		}
@@ -23,34 +22,34 @@
             <a href="/">
                 <i class="icon-arrow-left-3 fg-darker smaller"></i>
             </a>
-            返回</h1>
+            Home</h1>
         <div class="grid no-margin">
 			<div class="row">
 			<div class="span6">
 				<div class="panel">
 					<div class="panel-header bg-lightBlue fg-white">
-						修改密码
+						Change password
 					</div>
 					<div class="panel-content">
-						<form action={% url 'change_pwd' %} method="POST" onsubmit="return validate();">
+						<form action="{% url 'do_change_pwd' %}" method="POST" onsubmit="return validate();">
 							{% csrf_token %}
 							<fieldset>
-							<label>旧密码</label>
+							<label>Old password</label>
 							<div class="input-control password" data-role="input-control">
-							<input type="password" id="oldpasswd" name="oldpasswd" placeholder="请输入旧密码">
+							<input type="password" id="oldpasswd" name="oldpasswd" placeholder="Type old password">
 							<button class="btn-reveal" tabindex="-1"></button>
 							</div>
-							<label>新密码</label>
+							<label>New password</label>
 							<div class="input-control password" data-role="input-control">
-							<input type="password" id="newpasswd" name="newpasswd" placeholder="请输入新密码">
+							<input type="password" id="newpasswd" name="newpasswd" placeholder="Type new password">
 							<button class="btn-reveal" tabindex="-1"></button>
 							</div>
-							<label>确认新密码</label>
+							<label>Confirm new password</label>
 							<div class="input-control password" data-role="input-control">
-							<input type="password" id="newpasswd1" name="newpasswd1" placeholder="请再次输入新密码">
+							<input type="password" id="newpasswd1" name="newpasswd1" placeholder="Retype new password">
 							<button class="btn-reveal" tabindex="-1"></button>
 							</div>
-							<input type="submit" value="确认">
+							<input type="submit" value="Confirm">
 							</fieldset>
 						</form>
 					</div>
@@ -59,5 +58,4 @@
 			</div>
         </div>
     </div>
-
 {% endblock %}
