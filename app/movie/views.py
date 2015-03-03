@@ -1,14 +1,23 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from app.movie.models import Movie, OwlUser
 import random
 random.seed = 20
 
 
 def index(request):
-    print(request)
-    print(request.session)
-    ctx = dict(username=request.session.get('username'))
-    return render(request, 'movie/index.html', ctx)
+    print(request.session.get("_auth_user_id"))
+    user_id = request.session.get('_auth_user_id')
+    if user_id:
+        try:
+            user = OwlUser.objects.get(id=user_id)
+            ctx = dict(user=user, top10_movies=Movie.objects.top_10())
+            return render(request, 'movie/index.html', ctx)
+        except OwlUser.DoesNotExist:
+            message = "User: "+str(user_id)+" does not exist"
+    else:
+        message = "What's user_name? "
+    ctx = dict(message=message, retry_url="index")
+    return render_to_response('error.html', ctx)
 
 
 def new_user(request):
@@ -25,6 +34,7 @@ def new_user(request):
     user.save()
     context = {'user': user}
     return render(request, 'movie/index.html', context)
+
 
 def detail(request, movie_id):
     ctx = dict(username=request.session.get('username'))

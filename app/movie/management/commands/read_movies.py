@@ -17,7 +17,7 @@ class Command(BaseCommand):
         engine = create_engine('mysql+mysqldb://xju:1234@localhost/'+db_name+'?charset=utf8')
         input_name = args[0]
         df = pd.read_table(input_name,
-                           names=['inner_id', 'name', 'avg_rate_site', 'publish_date', 'types',
+                           names=['id', 'name', 'avg_rate_site', 'publish_date', 'types',
                                   'publish_country', 'language', 'length', 'directors', 'actors'])
         df['avg_rate_site'] *= 100
         df.index.name = 'id'

@@ -3,9 +3,9 @@ from pandas import DataFrame
 import numpy as np
 
 
-def unpivot(frame):
+def unpivot(frame, index_name, columns_name, value_name):
     n, k = frame.shape
-    data = {'rate': frame.values.ravel('F'),
-            'user_id': np.asarray(frame.columns).repeat(n),
-            'movie_id': np.tile(np.asarray(frame.index), k)}
-    return DataFrame(data, columns=['rate', 'movie_id', 'user_id'])
+    data = {value_name: frame.values.ravel('F'),
+            columns_name: np.asarray(frame.columns).repeat(n),
+            index_name: np.tile(np.asarray(frame.index), k)}
+    return DataFrame(data, columns=[value_name, index_name, columns_name])

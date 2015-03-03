@@ -9,7 +9,7 @@
 		<span>{{message}}</span><br>
 		<br>
 		<ul>
-			<li><a href="{{retry_url}}">重试</a></li>
+			<li><a href="{% url retry_url %}">重试</a></li>
 			<li><span><a href={% url 'app.account.views.index' %}>返回首页</a></span></li>
 		</ul>
     </div>

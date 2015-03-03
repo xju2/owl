@@ -5,12 +5,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 class MovieManager(models.Manager):
     def create_movie(self, index, name):
-        movie = self.create(inner_id=index, name=name)
+        movie = self.create(id=index, name=name)
         return movie
+
+    def top_10(self):
+        return self.order_by('avg_rate_site').reverse()[:10]
 
 
 class Movie(models.Model):
-    inner_id = models.PositiveIntegerField()
+    id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=25)
     avg_rate_site = models.SmallIntegerField(null=True)  # convert decimal value to integer
     publish_date = models.CharField('date released', max_length=11, default="NLL", null=True)
@@ -27,29 +30,26 @@ class Movie(models.Model):
     def __str__(self):
         return self.name
 
-    def avg_rate(self):
+    def avg_rate_ph(self):
         total_rate = 0
         n_rate = 0
-        for real_rate in self.realrate_set.all():
+        for real_rate in self.phantomrate_set.all():
             total_rate += real_rate.rate
             n_rate += 1
         return total_rate * 1.0 / n_rate
 
-
-class OwlUserManager(models.Manager):
-    def create_user(self, index, name):
-        user = self.create(inner_id=index, username=name)
-        return user
+    def get_ars(self):
+        return self.avg_rate_site/100.0
 
 
 class OwlUser(User):
-    inner_id = models.PositiveIntegerField()
     watched_movies = models.PositiveSmallIntegerField(default=0)
 
-    objects = OwlUserManager()
-
     def top_suggest(self):
-        return self.suggestrate_set.order_by('rate')[:10]
+        if self.movie_suggestrate_related.all().count() < 1:
+            return None
+        else:
+            return self.movie_suggestrate_related.order_by['rate'].reverse()[:10]
 
     def __str__(self):
         return self.name
@@ -90,7 +90,7 @@ class SuggestRate(RateBase):
 
 
 class PhantomUser(models.Model):
-    inner_id = models.CharField(max_length=20)
+    id = models.PositiveIntegerField(primary_key=True)
     watched_movies = models.PositiveSmallIntegerField(default=0)
 
 

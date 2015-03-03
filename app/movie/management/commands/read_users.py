@@ -18,8 +18,8 @@ class Command(BaseCommand):
         db_name = settings.DATABASES['default']['NAME']
         engine = create_engine('mysql+mysqldb://xju:1234@localhost/'+db_name+'?charset=utf8')
         input_name = args[0]
-        df = pd.read_table(input_name, names=['inner_id', 'name'],
-                           dtype={'inner_id': np.str, 'name': np.str})
+        df = pd.read_table(input_name, names=['id', 'name'],
+                           dtype={'id': np.uint32, 'name': str}, skiprows=1)
         df['watched_movies'] = 0
         df.drop('name', axis=1).to_sql("movie_phantomuser", engine, flavor='mysql', if_exists='append',
                                        index=False, chunksize=1000)

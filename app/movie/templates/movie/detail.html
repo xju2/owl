@@ -1,4 +1,4 @@
 {% load humanize %}
-Rated by {{ movie.realrate_set.all.count }} users.<br>
-average rate is: {{ movie.avg_rate|floatformat:2 }}<br>
+Rated by {{ movie.movie_realrate_related.all.count }} users.<br>
+average rate is: {{ movie.get_ars|floatformat:2 }}<br>
 
