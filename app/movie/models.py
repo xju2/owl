@@ -1,20 +1,29 @@
 from django.db import models
 from django.utils import timezone
-#from jsonfield import JSONField
+from django.contrib.auth.models import User
 
 
 # Create your models here.
 class MovieManager(models.Manager):
     def create_movie(self, index, name):
-        movie = self.create(index=index, name=name, date=timezone.now())
+        movie = self.create(inner_id=index, name=name)
         return movie
 
 
 class Movie(models.Model):
-    index = models.CharField(max_length=200, unique=True)
-    name = models.CharField(max_length=200)
-    date = models.DateTimeField('date released')
-    rated_users = models.IntegerField(default=0)
+    inner_id = models.PositiveIntegerField()
+    name = models.CharField(max_length=25)
+    avg_rate_site = models.SmallIntegerField(null=True)  # convert decimal value to integer
+    #publish_date = models.DateTimeField('date released', default=timezone.now(), null=True)
+    publish_date = models.CharField('date released', max_length=11, default="NLL", null=True)
+    types = models.CharField(max_length=40, null=True)
+    rated_users = models.PositiveIntegerField(default=0, blank=True, null=True)
+    publish_country = models.CharField(max_length=50, null=True)
+    language = models.CharField(max_length=50, null=True)  # use Chinese or English?
+    directors = models.CharField(max_length=50, null=True)
+    actors = models.CharField(max_length=400, null=True)
+    length = models.CharField(max_length=20, default="NA", null=True)
+
     objects = MovieManager()
 
     def __str__(self):
@@ -29,22 +38,17 @@ class Movie(models.Model):
         return total_rate * 1.0 / n_rate
 
 
-class UserManager(models.Manager):
+class OwlUserManager(models.Manager):
     def create_user(self, index, name):
-        user = self.create(index=index, name=name)
+        user = self.create(inner_id=index, username=name)
         return user
 
 
-class User(models.Model):
-    index = models.CharField(max_length=200, unique=True)
-    name = models.CharField(max_length=200, blank=True)
-    password = models.FloatField(default=123, blank=True)
-    watched_movies = models.IntegerField(default=0)
-    email = models.EmailField(blank=True)
-    last_name = models.CharField(max_length=200, blank=True)
-    first_name = models.CharField(max_length=200, blank=True)
-    #rated = JSONField("rated movies", blank=True, default={});
-    objects = UserManager()
+class OwlUser(User):
+    inner_id = models.PositiveIntegerField()
+    watched_movies = models.PositiveSmallIntegerField(default=0)
+
+    objects = OwlUserManager()
 
     def top_suggest(self):
         return self.suggestrate_set.order_by('rate')[:10]
@@ -53,7 +57,7 @@ class User(models.Model):
         return self.name
 
 
-class RealRateManager(models.Manager):
+class RateBaseManager(models.Manager):
     def order_by_rate(self):
         return self.order_by('rate').reverse()
 
@@ -64,20 +68,24 @@ class RealRateManager(models.Manager):
         return self.order_by('rate').reverse()[:10]
 
 
-class RealRate(models.Model):
-    user = models.ForeignKey(User)
-    movie = models.ForeignKey(Movie)
-    rate = models.FloatField()
-    objects = RealRateManager()
+class RateBase(models.Model):
+    user = models.ForeignKey(OwlUser, related_name="%(app_label)s_%(class)s_related")
+    movie = models.ForeignKey(Movie, related_name="%(app_label)s_%(class)s_related")
+    rate = models.SmallIntegerField()
+    objects = RateBaseManager()
 
     def __str__(self):
         return self.user.name, " rated ", self.movie.name, " as ", self.rate
 
+    class Meta:
+        abstract = True
+        # ordering = ['rate']
 
-class SuggestRate(models.Model):
-    user = models.ForeignKey(User)
-    movie = models.ForeignKey(Movie)
-    rate = models.FloatField()
 
-    def __str__(self):
-        return "Suggest: ", self.user.name, " rated ", self.movie.name, " as ", self.rate
+class RealRate(RateBase):
+    from_site = models.CharField(max_length=30)
+
+
+class SuggestRate(RateBase):
+    pass
+

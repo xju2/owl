@@ -1,8 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
-from app.movie.models import Movie
-
 # -*- coding: utf_8 -*-
-from itertools import islice
+
+from django.core.management.base import BaseCommand, CommandError
+from sqlalchemy import create_engine
+from django.conf import settings
+import pandas as pd
 
 
 class Command(BaseCommand):
@@ -12,22 +13,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if len(args) == 0:
             raise CommandError('No input file given')
-        movie_list = args[0]
-        n = 10000
-        counter = 0
-        with open(movie_list) as f:
-            while True:
-                next_n_lines = list(islice(f,n))
-                if not next_n_lines:
-                    break
-                for line in next_n_lines:
-                    all_items = line.split()
-                    index = all_items[0]
-                    name = all_items[1]
-                    try:
-                        Movie.objects.get(index=index)
-                    except Movie.DoesNotExist:
-                        q = Movie.objects.create_movie(index, name)
-                        q.save()
-                    counter += 1
-        self.stdout.write('Successfully added %d movies' % counter)
+        db_name = settings.DATABASES['default']['NAME']
+        engine = create_engine('mysql+mysqldb://xju:1234@localhost/'+db_name+'?charset=utf8')
+        input_name = args[0]
+        df = pd.read_table(input_name,
+                           names=['inner_id', 'name', 'avg_rate_site', 'publish_date', 'types',
+                                  'publish_country', 'language', 'length', 'directors', 'actors'])
+        df['avg_rate_site'] *= 100
+        df.index.name = 'id'
+        df['rated_users'] = 0
+        df.to_sql("movie_movie", engine, flavor='mysql', if_exists='append', index=False,
+                  chunksize=1000)
+        self.stdout.write('Successfully added %d movies' % (df.shape[0]))

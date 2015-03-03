@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'app.movie',
-    'app.account'
+    'app.account',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'owl.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'movies',
+        'NAME': 'testowl',
         'USER': 'xju',
         'PASSWORD': '1234',
         'HOST': 'localhost',
