@@ -42,8 +42,10 @@ class Movie(models.Model):
         return self.avg_rate_site/100.0
 
 
-class OwlUser(User):
+class OwlUser(models.Model):
+    user = models.ForeignKey(User)
     watched_movies = models.PositiveSmallIntegerField(default=0)
+    gender = models.NullBooleanField(null=True, name="gender")
 
     def top_suggest(self):
         if self.movie_suggestrate_related.all().count() < 1:

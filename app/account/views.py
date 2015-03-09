@@ -48,12 +48,14 @@ def do_sign_up(request):
     post = request.POST.dict()
     post["password"] = User.objects.make_random_password()
     del post["csrfmiddlewaretoken"]
-    user = OwlUser.objects.create_user(**post)
+    user = User.objects.create_user(**post)
     try:
 
         user.save()
         user.email_user('Owl Password', Template('Username: $username, Password: $password').substitute(**post),
                         "oppps@163.com")
+        q = OwlUser(id=None, user=user, watched_movies=0)
+        q.save()
     except:
         print("User not created!")
         pass
@@ -62,6 +64,7 @@ def do_sign_up(request):
 
 @login_required
 def change_pwd(request):
+    print("change pwd", request.user)
     ctx = dict(user=request.user)
     ctx.update(csrf(request))
     return render_to_response('account/change_pwd.html', ctx)

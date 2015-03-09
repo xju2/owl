@@ -9,7 +9,7 @@ def index(request):
     user_id = request.session.get('_auth_user_id')
     if user_id:
         try:
-            user = OwlUser.objects.get(id=user_id)
+            user = OwlUser.objects.get(user_id=user_id)
             ctx = dict(user=user, top10_movies=Movie.objects.top_10())
             return render(request, 'movie/index.html', ctx)
         except OwlUser.DoesNotExist:
