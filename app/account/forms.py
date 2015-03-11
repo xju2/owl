@@ -14,9 +14,9 @@ class SignInForm(forms.Form):
         password = cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         if user and not user.is_active:
-            raise forms.ValidationError("该用户已禁用")
+            raise forms.ValidationError("User is forbidden.")
         if not user:
-            raise forms.ValidationError("用户名密码错误")
+            raise forms.ValidationError("Sign in failed.")
         return cleaned_data
 
 
@@ -30,9 +30,9 @@ class SignUpForm(forms.Form):
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
         if User.objects.filter(username=username):
-            raise forms.ValidationError("用户名已占用")
+            raise forms.ValidationError("Username is taken.")
         if User.objects.filter(email=email):
-            raise forms.ValidationError("邮箱已占用")
+            raise forms.ValidationError("Email is taken.")
         return cleaned_data
 
 
@@ -51,9 +51,9 @@ class ChangePasswordForm(forms.Form):
         password = cleaned_data.get('password')
         password_confirm = cleaned_data.get('password_confirm')
         if password != password_confirm:
-            raise forms.ValidationError("两次输入的新密码不一致")
+            raise forms.ValidationError("New password confirmation failed.")
         if not authenticate(username=self.username, password=old_password):
-            raise forms.ValidationError("旧密码不正确")
+            raise forms.ValidationError("Old password is not correct.")
         return cleaned_data
 
 
@@ -68,9 +68,9 @@ class ResetPasswordForm(forms.Form):
         cleaned_data = super(ResetPasswordForm, self).clean()
         email = cleaned_data.get('email')
         if self.email1 and email != self.email1:
-            raise forms.ValidationError("填写的邮箱与当前帐号的邮箱不一致")
+            raise forms.ValidationError("Email is not same with account.")
         if not User.objects.filter(email=email):
-            raise forms.ValidationError("系统中不存在该邮箱")
+            raise forms.ValidationError("Email is not signed up.")
 
         return cleaned_data
 
