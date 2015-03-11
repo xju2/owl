@@ -4,8 +4,6 @@ import random
 random.seed = 20
 
 def index(request):
-<<<<<<< HEAD
-    print(request.session.get("_auth_user_id"))
     user_id = request.session.get('_auth_user_id')
     if user_id:
         try:
@@ -32,13 +30,8 @@ def new_user(request):
     user.first_name = first_name
     user.email = email
     user.save()
-    context = {'user': user}
-    return render(request, 'movie/index.html', context)
-
-=======
     ctx = dict(user=request.user, top10_movies=Movie.objects.top_10())
     return render(request, 'movie/index.html', ctx)
->>>>>>> ycz
 
 def detail(request, movie_id):
     ctx = dict(user=request.user)
