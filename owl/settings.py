@@ -62,7 +62,7 @@ WSGI_APPLICATION = 'owl.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testowl',
+        'NAME': 'owl',
         'USER': 'xju',
         'PASSWORD': '1234',
         'HOST': 'localhost',

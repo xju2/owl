@@ -1,0 +1,24 @@
+{% extends "bbase.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+		<h1>Welcome to Owl!</h1>
+		<p>It's a website named Owl.</p>
+		<p><a class="btn btn-primary btn-lg" href="/" role="button">More &raquo;</a>
+		</p>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<h2>Movie</h2>
+			<p>Find your favorite movies.</p>
+			<p><a class="btn btn-default" href="{% url 'app.movie.views.index' %}" role="button">View Details &raquo;</a>
+			</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

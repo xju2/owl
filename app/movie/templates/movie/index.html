@@ -10,7 +10,7 @@
             </a>
             电影推荐</h1>
         <div class="grid no-margin">
-	{% if user %}
+	{% if user.username %}
     	{% load humanize %}
     	{% if user.realrate_set.all.count < 1 %}
         <p>You have not rated any movies yet</p>

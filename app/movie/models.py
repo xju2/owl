@@ -42,17 +42,6 @@ class Movie(models.Model):
         return self.avg_rate_site/100.0
 
 
-class OwlUser(User):
-    watched_movies = models.PositiveSmallIntegerField(default=0)
-
-    def top_suggest(self):
-        if self.movie_suggestrate_related.all().count() < 1:
-            return None
-        else:
-            return self.movie_suggestrate_related.order_by['rate'].reverse()[:10]
-
-    def __str__(self):
-        return self.name
 
 
 class RateBaseManager(models.Manager):
@@ -68,7 +57,7 @@ class RateBaseManager(models.Manager):
 
 
 class RateBase(models.Model):
-    user = models.ForeignKey(OwlUser, related_name="%(app_label)s_%(class)s_related")
+    user = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_related")
     movie = models.ForeignKey(Movie, related_name="%(app_label)s_%(class)s_related")
     rate = models.SmallIntegerField()
     objects = RateBaseManager()
