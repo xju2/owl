@@ -1,61 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head> 
-    <title>{% block title %}{% endblock %} - Owl</title>
-    <link rel="stylesheet" type="text/css" href="/static/metro/css/metro-bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/static/metro/css/metro-bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="/static/metro/css/iconFont.css" />
-    <link rel="stylesheet" type="text/css" href="/static/metro/css/docs.css" />
-    <link rel="stylesheet" type="text/css" href="/static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="/static/d3/css/coltree.css" />
-    <script type="text/javascript" src="/static/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/jquery/jquery.widget.min.js"></script>
-    <script type="text/javascript" src="/static/metro/min/metro.min.js"></script>
-    <script type="text/javascript" src="/static/custom.js"></script>
-    <script type="text/javascript" src="/static/d3/js/d3.v3.min.js"></script>
-	{% block exjs %}{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="description" content="chinadaas">
+	<meta name="author" content="yichuanzhou">
+	<link rel="icon" href="/static/favicon.ico">
+    <title>{% block title %}{% endblock %}- Owl</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="/static/main.css" rel="stylesheet">
+    
+	{% block exthead %} {% endblock %}
 </head>
 
-<body class="metro">
-    <header class="bg-dark">
-    <div class="navigation-bar dark fixed-top shadow">
-        <div class="navigation-bar-content container" >
-            <a class="element" href="/">Owl <sup>1.0</sup></a>
-            <span class="element-divider"></span>
-            <ul class="element-menu">
-                <li><a href="{% url 'app.movie.views.index' %}">Movie</a></li>
-            </ul>
-			<div class="no-tablet-portrait no-phone">
-			<div class="element-menu place-right">
-			{% if user.username %}
-				<div class="element" title="{{user.username}}">
-					<span class="icon-user"></span>
-					<span>{{user.username}}</span>
-				</div>
-				<span class="element-divider"></span>
-				<a href="{% url 'app.account.views.change_pwd' %}" class="element" title="Change Pwd">
-					<span>Change Pwd</span>
-				</a>
-				<span class="element-divider"></span>
-				<a href="{% url 'app.account.views.sign_out' %}" class="element" title="Sign Out">
-					<span>Sign Out</span>
-				</a>
-			{% else %}
-				<a title="Sign Up" href="{% url 'app.account.views.sign_up' %}" class="element">
-					<span>Sign Up</span>
-				</a>
-				<a title="Sign In" href="{% url 'app.account.views.sign_in' %}" class="element">
-					<span>Sign In</span>
-				</a>
-			{% endif %}
-			</div>
-			</div>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Owl</a>
         </div>
-    </div>
-    </header>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+			<li><a href="{% url 'app.movie.views.index' %}">Movie</a></li>
+            <li><a href="/about/">About</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          	{% if user.username %}
+				<li><a href="{% url 'app.account.views.profile' %}">{{user.username}}</a></li>
+				<li><a href="{% url 'app.account.views.sign_out' %}">Sign Out</a></li>
+			{% else %}
+				<li><a href="{% url 'app.account.views.sign_up' %}">Sign Up</a></li>
+				<li><a href="{% url 'app.account.views.sign_in' %}">Sign In</a></li>
+			{% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
     {% block content %} {% endblock %}
-</div>
+    
+	<footer class="footer">
+		<div class="container">
+			<p class="text-muted">&copy; Owl 2015 by Andy</p>
+		</div>
+	</footer>
+    
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

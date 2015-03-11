@@ -4,7 +4,6 @@ from django.contrib import admin
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from app.movie.models import OwlUser
 from app.movie.models import Movie
 from app.movie.models import RealRate
 from app.movie.models import SuggestRate
@@ -36,5 +35,4 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(Movie)
 admin.site.register(SuggestRate)
-admin.site.register(OwlUser, UserAdmin)
 admin.site.register(RealRate, RealRateAdmin)

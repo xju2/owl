@@ -2,66 +2,39 @@
 
 {% block title %} Sign Up {% endblock %}
 
-{% block exjs %}
-<script>
-	function validate() {
-	    var username = $("#username").val();
-		if (username == null || username == '') {
-			alert("Input username!");
-			$('#username').focus();
-			return false;
-		}
-		var email = $("#email").val();
-		if (email == null || email == '') {
-			alert("Input email!");
-			$('#email').focus();
-			return false;
-		}
-	}
-</script>
+{% block exthead %}
+<link href="/static/signin.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>
-            <a href="/">
-                <i class="icon-arrow-left-3 fg-darker smaller"></i>
-            </a>
-            Home</h1>
-        <div class="grid no-margin">
-			<div class="row">
-			<div class="span6">
-				<div class="panel">
-					<div class="panel-header bg-lightBlue fg-white">
-						Sign Up
-					</div>
-					<div class="panel-content">
-						<form action="{% url 'do_sign_up' %}" method="POST" onsubmit="return validate();">
-							{% csrf_token %}
-							<fieldset>
-							<label>Username</label>
-							<div class="input-control text" data-role="input-control">
-							    <input type="text" id="username" name="username" placeholder="Type username"/>
-                            </div>
-							<label>Email</label>
-							<div class="input-control text" data-role="input-control">
-							    <input type="text" id="email" name="email" placeholder="Type email"/>
-							</div>
-                            <label>First name</label>
-							<div class="input-control text" data-role="input-control">
-							    <input type="text" id="first_name" name="first_name" placeholder="Type first name"/>
-							</div>
-                            <label>Last name</label>
-							<div class="input-control text" data-role="input-control">
-							    <input type="text" id="last_name" name="last_name" placeholder="Type last name"/>
-							</div>
-                            <input type="submit" value="Sign Up"/>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div>
-			</div>
-        </div>
-    </div>
+<div class="container">
+
+	<form class="form-signin" action="{% url 'sign_up' %}" method="post">
+		{% csrf_token %}
+		{% if form.non_field_errors %}
+		<div class="alert alert-danger" role="alert">
+			<a href="#" class="close" data-dismiss="alert">&times;</a> 
+			{% for error in form.non_field_errors %} {{ error | escape }} {% endfor %}
+		</div>
+		{% endif %}
+		<h2 class="form-signin-heading">Sign Up</h2>
+		
+		{{ form.username.errors }}
+		<label for="username" class="sr-only">Username</label>
+		<input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+		
+		{{ form.email.errors }}
+		<label for="email" class="sr-only">Email</label>
+		<input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+		
+		{{ form.password.errors }}
+		<label for="password" class="sr-only">Password</label>
+		<input type="password" id="password" name="password" class="form-control" placeholder="Create password" required>
+		
+		<br />
+		
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Confirm</button>
+	</form>
+
+</div>
 {% endblock %}

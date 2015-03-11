@@ -1,0 +1,48 @@
+{% extends "bbase.html" %}
+
+{% block title %} Security {% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="col-sm-3">
+		<div class="list-group">
+			<a href="{% url 'profile' %}" class="list-group-item">Profile</a>
+			<a href="#" class="list-group-item active">Security</a>
+		</div>
+	</div>
+	<div class="col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Change Password</h3>
+			</div>
+			<div class="panel-body">
+				<form role="form" action="{% url 'security' %}" method="post">
+					{% csrf_token %} 
+					{% if form.non_field_errors %}
+					<div class="alert alert-danger" role="alert">
+						<a href="#" class="close" data-dismiss="alert">&times;</a> {% for error in form.non_field_errors %} {{ error | escape }} {% endfor %}
+					</div>
+					{% endif %}
+					<div class="form-group">
+						{{ form.old_password.errors }}
+						<label for="old_password">Old Password</label>
+						<input type="password" id="old_password" name="old_password" class="form-control" required>
+					</div>
+					<div class="form-group">
+						{{ form.password.errors }}
+						<label for="password">New Password</label>
+						<input type="password" id="password" name="password" class="form-control" required>
+					</div>
+					<div class="form-group">
+						{{ form.password_confirm.errors }}
+						<label for="password_confirm">Confirm New Password</label>
+						<input type="password" id="password_confirm" name="password_confirm" class="form-control" required>
+					</div>
+					<button class="btn btn-default" type="submit">Change Password</button>
+					<a href="{%url 'reset_password'%}">Forget password?</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

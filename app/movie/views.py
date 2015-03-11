@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, render_to_response
-from app.movie.models import Movie, OwlUser
+from app.movie.models import Movie
 import random
 random.seed = 20
 
-
 def index(request):
+<<<<<<< HEAD
     print(request.session.get("_auth_user_id"))
     user_id = request.session.get('_auth_user_id')
     if user_id:
@@ -35,9 +35,13 @@ def new_user(request):
     context = {'user': user}
     return render(request, 'movie/index.html', context)
 
+=======
+    ctx = dict(user=request.user, top10_movies=Movie.objects.top_10())
+    return render(request, 'movie/index.html', ctx)
+>>>>>>> ycz
 
 def detail(request, movie_id):
-    ctx = dict(username=request.session.get('username'))
+    ctx = dict(user=request.user)
     movie = get_object_or_404(Movie, pk=movie_id)
     ctx.update(dict(movie=movie))
     return render(request, 'movie/detail.html', ctx)
