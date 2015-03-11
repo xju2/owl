@@ -35,7 +35,7 @@ def sign_up(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = User.objects.create_user(username, email, password)
-            login(request, user)
+            #login(request, user)
             return HttpResponseRedirect('/')
     else:
         form = SignUpForm()
@@ -44,23 +44,6 @@ def sign_up(request):
     return render_to_response('account/sign_up.html', ctx)
 
 
-<<<<<<< HEAD
-def do_sign_up(request):
-    post = request.POST.dict()
-    post["password"] = User.objects.make_random_password()
-    del post["csrfmiddlewaretoken"]
-    user = User.objects.create_user(**post)
-    try:
-
-        user.save()
-        user.email_user('Owl Password', Template('Username: $username, Password: $password').substitute(**post),
-                        "oppps@163.com")
-        q = OwlUser(id=None, user=user, watched_movies=0)
-        q.save()
-    except:
-        print("User not created!")
-        pass
-=======
 def reset_password(request):
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
@@ -73,7 +56,7 @@ def reset_password(request):
             user.set_password(password)
             user.save()
             d = {'username': user.username, 'password': password}
-            user.email_user('ChinaDaaS平台密码重置', \
+            user.email_user('Owl Password Reset', \
                             Template('username: $username, new password: $password').substitute(**d), "oppps@163.com")
             return HttpResponseRedirect('/')
     else:
@@ -81,15 +64,9 @@ def reset_password(request):
     ctx = {'form': form, 'user': request.user}
     ctx.update(csrf(request))
     return render_to_response('account/reset_password.html', ctx)
->>>>>>> ycz
 
 
 @login_required
-<<<<<<< HEAD
-def change_pwd(request):
-    print("change pwd", request.user)
-    ctx = dict(user=request.user)
-=======
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
@@ -104,7 +81,6 @@ def profile(request):
     else:
         form = ProfileForm()
     ctx = {'form': form, 'user': request.user}
->>>>>>> ycz
     ctx.update(csrf(request))
     return render_to_response('account/profile.html', ctx)
 

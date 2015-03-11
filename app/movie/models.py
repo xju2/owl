@@ -42,7 +42,6 @@ class Movie(models.Model):
         return self.avg_rate_site/100.0
 
 
-<<<<<<< HEAD
 class OwlUser(models.Model):
     user = models.ForeignKey(User)
     watched_movies = models.PositiveSmallIntegerField(default=0)
@@ -56,8 +55,6 @@ class OwlUser(models.Model):
 
     def __str__(self):
         return self.name
-=======
->>>>>>> ycz
 
 
 class RateBaseManager(models.Manager):
