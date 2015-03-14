@@ -10,10 +10,7 @@ def train_user(current_user):
 
     movie_cut = 1000
     user_cut = 50
-    print("movie cut: ", movie_cut)
-    print("user cut: ", user_cut)
     db_name = settings.DATABASES['default']['NAME']
-    print("data base name", db_name)
     engine = create_engine('mysql+mysqldb://xju:1234@localhost/'+db_name+'?charset=utf8')
     good_movie = pd.read_sql_query('select id from movie_movie where rated_users > ' +
                                    str(movie_cut), engine)
@@ -29,8 +26,6 @@ def train_user(current_user):
     for ids in good_movie['id'].values.tolist():
         movie_id_list += str(ids) + ','
 
-    print("selected users: ", good_user.shape[0])
-    print("selected movies: ", good_movie.shape[0])
     good_rate = pd.read_sql_query('select user_id, movie_id, rate from movie_phantomrate where user_id in ('
                                   + user_id_list[:-1]+') and movie_id in ('+movie_id_list[:-1]+');', engine)
     # add current user's rate to the matrix
