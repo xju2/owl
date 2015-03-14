@@ -19,7 +19,7 @@ class SVDThreshold:
         counter = 0
         n_keep = self.cut_num
         xk = matrix.T.fillna(method='ffill').fillna(method='bfill').T
-        while norm > self.tolerance and counter < 500:
+        while norm > self.tolerance and counter < 200:
             xk[projector] = matrix[projector]
             u, s, v = linalg.svd(xk)
             sig = linalg.diagsvd(s, m, n)

@@ -10,6 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for movie in Movie.objects.all():
-            movie.rated_users = movie.realrate_set.all().count()
+            # movie.rated_users = movie.realrate_set.all().count()
+            movie.rated_users = movie.phantomrate_set.all().count()
             movie.save()
         self.stdout.write("Successfully updated movie's rated users")

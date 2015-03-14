@@ -11,6 +11,7 @@ from owl.settings import LOGIN_URL
 
 from app.account.forms import *
 
+
 def sign_in(request):
     if request.method == 'POST':
         form = SignInForm(request.POST)
@@ -56,7 +57,7 @@ def reset_password(request):
             user.set_password(password)
             user.save()
             d = {'username': user.username, 'password': password}
-            user.email_user('Owl Password Reset', \
+            user.email_user('Owl Password Reset',
                             Template('username: $username, new password: $password').substitute(**d), "oppps@163.com")
             return HttpResponseRedirect('/')
     else:

@@ -16,7 +16,7 @@ class Movie(models.Model):
     id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=25)
     avg_rate_site = models.SmallIntegerField(null=True)  # convert decimal value to integer
-    publish_date = models.CharField('date released', max_length=11, default="NLL", null=True)
+    publish_date = models.CharField('date released', max_length=11, default="NULL")
     types = models.CharField(max_length=40, null=True)
     rated_users = models.PositiveIntegerField(default=0, blank=True, null=True)
     publish_country = models.CharField(max_length=50, null=True)
@@ -44,7 +44,6 @@ class Movie(models.Model):
 
 class OwlUser(models.Model):
     user = models.ForeignKey(User)
-    watched_movies = models.PositiveSmallIntegerField(default=0)
     gender = models.NullBooleanField(null=True, name="gender")
 
     def top_suggest(self):
@@ -54,7 +53,7 @@ class OwlUser(models.Model):
             return self.movie_suggestrate_related.order_by['rate'].reverse()[:10]
 
     def __str__(self):
-        return self.name
+        return self.user.first_name+" "+self.user.last_name
 
 
 class RateBaseManager(models.Manager):
@@ -76,7 +75,7 @@ class RateBase(models.Model):
     objects = RateBaseManager()
 
     def __str__(self):
-        return self.user.name, " rated ", self.movie.name, " as ", self.rate
+        return self.user.last_name+" "+self.user.first_name+" rated "+self.movie.name+" as "+str(self.rate)
 
     class Meta:
         abstract = True

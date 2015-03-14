@@ -9,3 +9,8 @@ def unpivot(frame, index_name, columns_name, value_name):
             columns_name: np.asarray(frame.columns).repeat(n),
             index_name: np.tile(np.asarray(frame.index), k)}
     return DataFrame(data, columns=[value_name, index_name, columns_name])
+
+
+def add_row(frame, column_content):
+    row, column = frame.shape
+    frame.loc[row] = column_content
