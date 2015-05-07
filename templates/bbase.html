@@ -32,9 +32,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-			<li><a href="{% url 'app.movie.views.index' %}">Movie</a></li>
-            <li><a href="/about/">About</a></li>
+            <li id="site_nav_index"><a href="/">Home</a></li>
+			<li id="site_nav_movie"><a href="{% url 'app.movie.views.index' %}">Movie</a></li>
+			<li id="site_nav_about"><a href="/about/">About</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	{% if user.username %}
@@ -62,5 +62,18 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/jquery/jquery.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+	<script>
+		$(function() {
+			var site_nav_url = window.location.pathname;
+			var regs = [/^\/$/, /^\/movie.*/, /^\/about.*/];
+			var selectors = ["#site_nav_index", "#site_nav_movie", "#site_nav_about"];
+			for (var i = 0; i < regs.length; i++) {
+				if (regs[i].exec(site_nav_url)) {
+					$(selectors[i]).addClass('active');
+					break;
+				}
+			}
+		});
+	</script>
 </body>
 </html>
